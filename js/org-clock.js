@@ -46,14 +46,14 @@ function Clock() {
         return items;
     }
     this.clockIn = function(item) {
+        if(this.current() == item) return;
         this.clockOut();
         currentClock = item;
         var now = new Date();
         if(typeof(data[item]) == "undefined") {
             this.add(item);
-        } else {
-            data[item]['log'].unshift({'in': now.getTime(), 'out': ''})
         }
+        data[item]['log'].unshift({'in': now.getTime(), 'out': ''})
         this.save();
     }
     this.clockOut = function() {
@@ -98,6 +98,42 @@ function Clock() {
         }
         return str;
     }
+    this.getSum = function(item, minTimestamp, maxTimestamp) {
+        var log = data[item]['log'];
+        var sum = 0;
+        var now = new Date();
+        if(maxTimestamp == false)
+          maxTimestamp = now.getTime();
+        if(minTimestamp == false)
+          minTimestamp = 0;
+        for(var i=0; i<log.length; i++) {
+            if(!log[i]['out']) break;
+            if(log[i]['out'] > maxTimestamp) break;
+            if(log[i]['out'] < minTimestamp) break;
+            if(log[i]['in'] < minTimestamp)
+              log[i]['in'] = minTimestamp;
+            sum += log[i]['out'] - log[i]['in'];
+        }
+    }
+    this.getSumToday = function(item) {
+        var d = new Date();
+        d.setTime(d.getTime() - 1000*60*60*24);
+        d.setHours(0,0,0);
+        this.getSum(item, d.getTime());
+    }
+    this.getSumThisWeek = function(item) {
+        // 从周一开始计算
+        var d = new Date();
+        d.setTime(d.getTime() - 1000*60*60*24*(d.getDay() - 1))
+        d.setHours(0,0,0);
+        this.getSum(item, d.getTime());
+    }
+    this.getSumThisMonth = function(item) {
+        var d = new Date();
+        d.setDate(1);
+        d.setHours(0,0,0);
+        this.getSum(item, d.getTime());
+    }
     this.orderByRencent = function() {
     }
     this.orderBySum = function() {
@@ -108,7 +144,6 @@ function Clock() {
             data[item] = {'log':[],'sum':0};
             items.push(item);
         }
-        this.clockIn(item);
     }
     this.rm = function(item) {
     }
