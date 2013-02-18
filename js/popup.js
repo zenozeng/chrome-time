@@ -2,7 +2,6 @@ function update() {
     chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
         var clock = new Clock();
         var item = getDomain(tabs[0]['url']);
-        console.log(item);
         var day = formatTimeDelta(clock.getSumToday(item));
         var week = formatTimeDelta(clock.getSumThisWeek(item));
         var month = formatTimeDelta(clock.getSumThisMonth(item));
