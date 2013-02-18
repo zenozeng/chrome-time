@@ -79,6 +79,38 @@ function Clock() {
         currentClock = '';
         this.save();
     }
+    this.tempSave = function() {
+        if(!this.current()) return;
+        if(typeof(data[this.current()]['log'][0]) == "undefined") return;
+        var now = new Date();
+        var delta = now.getTime() - data[this.current()]['log'][0]['in'];
+        data[this.current()]['temp'] = delta;
+        this.save();
+    }
+    this.cancelOpen = function() {
+        // Cancel the open timer altogether.  It will be as though you never clocked in.
+        if(!this.current()) return;
+        if(typeof(data[this.current()]['log'][0]) == "undefined") return;
+        if(data[this.current()]['log'][0]['out'] == '')
+          data[this.current()]['log'].shift();
+        lastClock = currentClock;
+        currentClock = '';
+        this.save();
+    }
+    this.checkTemp = function() {
+        // check temp
+        if(!this.current()) return;
+        if(typeof(data[this.current()]['log'][0]) == "undefined") return;
+        if(typeof(data[this.current()]['temp']) != "undefined") {
+            var temp = parseInt(data[this.current()]['temp']);
+            data[this.current()]['sum'] += temp;
+            if(data[this.current()]['log'][0]['out'] == '') {
+                data[this.current()]['log'][0]['out'] = data[this.current()]['log'][0]['in'] + temp;
+            }
+            data[this.current()]['temp'] = 0;
+        }
+        this.save();
+    }
     this.save = function() {
         localStorage.setItem('clockData', JSON.stringify(data));
         localStorage.setItem('clockItems', JSON.stringify(items));
