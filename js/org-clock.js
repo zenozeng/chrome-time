@@ -25,6 +25,18 @@ function formatNumberLength(num, length) {
     }
     return r;
 }
+function formatTimeDelta(microtime) {
+    var seconds = parseInt(microtime / 1000);
+    var minutes = parseInt(seconds / 60);
+    var hours = parseInt(minutes / 60);
+    minutes = minutes % 60;
+    seconds = seconds % 60;
+    minutes = formatNumberLength(minutes, 2);
+    seconds = formatNumberLength(seconds, 2);
+    var arr = [minutes, seconds];
+    if(hours > 0) arr.push(hours);
+    return arr.join(":");
+}
 function Clock() {
     var currentClock, data, lastClock, items;
     data = localStorage.getItem('clockData') ? JSON.parse(localStorage.getItem('clockData')) : {};
@@ -102,37 +114,43 @@ function Clock() {
         var log = data[item]['log'];
         var sum = 0;
         var now = new Date();
-        if(maxTimestamp == false)
+        if(!maxTimestamp)
           maxTimestamp = now.getTime();
-        if(minTimestamp == false)
+        if(!minTimestamp)
           minTimestamp = 0;
         for(var i=0; i<log.length; i++) {
-            if(!log[i]['out']) break;
-            if(log[i]['out'] > maxTimestamp) break;
+            if(!log[i]['out']) {
+                if(i == 0)
+                  log[i]['out'] = now.getTime();
+                else
+                  continue;
+            }
+            if(log[i]['in'] > maxTimestamp) break;
             if(log[i]['out'] < minTimestamp) break;
-            if(log[i]['in'] < minTimestamp)
-              log[i]['in'] = minTimestamp;
+            if(log[i]['in'] < minTimestamp) log[i]['in'] = minTimestamp;
+            if(log[i]['out'] > maxTimestamp) log[i]['out'] = maxTimestamp;
             sum += log[i]['out'] - log[i]['in'];
         }
+        return sum;
     }
     this.getSumToday = function(item) {
         var d = new Date();
         d.setTime(d.getTime() - 1000*60*60*24);
         d.setHours(0,0,0);
-        this.getSum(item, d.getTime());
+        return this.getSum(item, d.getTime());
     }
     this.getSumThisWeek = function(item) {
-        // 从周一开始计算
+        // 从周一 00:00 开始计算
         var d = new Date();
         d.setTime(d.getTime() - 1000*60*60*24*(d.getDay() - 1))
         d.setHours(0,0,0);
-        this.getSum(item, d.getTime());
+        return this.getSum(item, d.getTime());
     }
     this.getSumThisMonth = function(item) {
         var d = new Date();
         d.setDate(1);
         d.setHours(0,0,0);
-        this.getSum(item, d.getTime());
+        return this.getSum(item, d.getTime());
     }
     this.orderByRencent = function() {
     }
