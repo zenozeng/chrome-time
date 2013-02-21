@@ -3,6 +3,19 @@ function init() {
     clock.checkTemp();
     clock.cancelOpen();
 }
+var notify = function(message, timeout) {
+    var notification = webkitNotifications.createNotification(
+      chrome.extension.getURL('icons/on.png'),
+      'Time Notify',
+      message
+    );
+    notification.show();
+    // 显示完之后5秒关闭
+    timeout = timeout ? timeout : 900;
+    notification.ondisplay = function(e) {
+        setTimeout(function() { notification.cancel(); }, timeout);
+    }
+}
 function updateClock(id, url) {
     var opt = localStorage.getItem('opt') != null ? JSON.parse(localStorage.getItem('opt')) : {};
     // 检查有无超时
@@ -23,6 +36,14 @@ function updateClock(id, url) {
                 }
                 console.log(domain);
                 var max = item['limit'] * 60 * 1000;
+                var delta = parseInt((max - sum)/1000);
+                if(delta > 0 && delta <= 60) {
+                    notify(delta);
+                }
+                if(delta == 300) {
+                    notify('时间预算还有五分钟');
+                }
+                console.log(delta);
                 if(sum > max) {
                     block();
                 }

@@ -180,8 +180,8 @@ function Clock() {
             sum += log[i]['out'] - log[i]['in'];
         }
 
-        console.log(log);
-        console.log("getsum:"+item+","+minTimestamp+","+maxTimestamp+","+sum);
+        // console.log(log);
+        // console.log("getsum:"+item+","+minTimestamp+","+maxTimestamp+","+sum);
 
         return sum;
     }
