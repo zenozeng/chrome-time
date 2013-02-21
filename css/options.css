@@ -1,5 +1,39 @@
+@font-face {
+    font-family: 'ubuntu';
+    font-style: normal;
+    font-weight: 400;
+    src: local('ubuntu'), url(ubuntu.woff) format('woff');
+}
 body {
     width: 600px;
     height: 400px;
+    margin: 0 auto;
+    padding: 20px;
     max-height: 90%;
+    font-family: ubuntu;
+}
+input, select {
+    background: #fff;
+    border: 1px solid #555;
+    font-size: 14px;
+    margin: 5px 3px 0 0;
+    padding: 7px;
+    font-family: ubuntu;
+}
+select {
+    padding: 6px;
+}
+input[type="text"] {
+    width: 120px;
+}
+input[type="submit"] {
+    cursor: pointer;
+}
+#add {
+    text-align: left;
+    color: #fff;
+    background: #777;
+}
+#items{
+    padding-bottom: 30px;
 }

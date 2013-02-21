@@ -34,7 +34,7 @@ function formatTimeDelta(microtime) {
     minutes = formatNumberLength(minutes, 2);
     seconds = formatNumberLength(seconds, 2);
     var arr = [minutes, seconds];
-    if(hours > 0) arr.push(hours);
+    if(hours > 0) arr.unshift(hours);
     return arr.join(":");
 }
 function Clock() {
