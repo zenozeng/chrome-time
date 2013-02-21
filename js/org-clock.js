@@ -43,6 +43,15 @@ function Clock() {
     items = localStorage.getItem('clockItems') ? JSON.parse(localStorage.getItem('clockItems')) : [];
     currentClock = localStorage.getItem('currentClock') || '';
     lastClock = localStorage.getItem('lastClock') || '';
+
+    function clone(obj){
+        if(obj == null || typeof(obj) != 'object')
+          return obj;
+        var temp = obj.constructor();
+        for(var key in obj)
+          temp[key] = clone(obj[key]);
+        return temp;
+    }
     this.current = function() {
         if(!currentClock) return false;
         return currentClock;
@@ -58,14 +67,18 @@ function Clock() {
         return items;
     }
     this.clockIn = function(item) {
+        if(!item) return;
+        if(item == ' ') return;
         if(this.current() == item) return;
+
+        console.log('clockIn:'+item);
         this.clockOut();
         currentClock = item;
         var now = new Date();
         if(typeof(data[item]) == "undefined") {
             this.add(item);
         }
-        data[item]['log'].unshift({'in': now.getTime(), 'out': ''})
+        data[item]['log'].unshift({'in': now.getTime(), 'out': ''});
         this.save();
     }
     this.clockOut = function() {
@@ -143,13 +156,16 @@ function Clock() {
         return str;
     }
     this.getSum = function(item, minTimestamp, maxTimestamp) {
-        var log = data[item]['log'];
-        var sum = 0;
-        var now = new Date();
+        var log, sum, now;
+        log = clone(data[item]['log']);
+        sum = 0;
+        now = new Date();
+
         if(!maxTimestamp)
           maxTimestamp = now.getTime();
         if(!minTimestamp)
           minTimestamp = 0;
+
         for(var i=0; i<log.length; i++) {
             if(!log[i]['out']) {
                 if(i == 0)
@@ -163,6 +179,10 @@ function Clock() {
             if(log[i]['out'] > maxTimestamp) log[i]['out'] = maxTimestamp;
             sum += log[i]['out'] - log[i]['in'];
         }
+
+        console.log(log);
+        console.log("getsum:"+item+","+minTimestamp+","+maxTimestamp+","+sum);
+
         return sum;
     }
     this.getSumToday = function(item) {

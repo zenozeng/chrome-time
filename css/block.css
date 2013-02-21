@@ -1,0 +1,22 @@
+article {
+    width: 600px;
+    padding: 50px;
+    height: 200px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -350px;
+    margin-top: -150px;
+    box-shadow: 0 0 15px #777;
+    font-size: 18px;
+    color: #555;
+}
+#domain::before {
+    content:">";
+    padding: 0 14px;
+}
+#day::before, #week::before, #month::before {
+    content:">>";
+    font-weight: bold;
+    padding: 0 14px;
+}

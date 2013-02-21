@@ -4,17 +4,52 @@ function init() {
     clock.cancelOpen();
 }
 function updateClock(id, url) {
+    var opt = localStorage.getItem('opt') != null ? JSON.parse(localStorage.getItem('opt')) : {};
+    // 检查有无超时
+    function checkLimit() {
+        if(typeof(opt['limit']) == "undefined") {
+            return;
+        }
+        for(var i=0; i<opt['limit'].length; i++) {
+            var item = opt['limit'][i];
+            var sum;
+            if(domain == item['domain']) {
+                if(item['period'] == 'day') {
+                    sum = clock.getSumToday(clock.current());
+                } else if(item['period'] == 'week') {
+                    sum = clock.getSumThisWeek(clock.current());
+                } else {
+                    sum = clock.getSumThisMonth(clock.current());
+                }
+                console.log(domain);
+                var max = item['limit'] * 60 * 1000;
+                if(sum > max) {
+                    block();
+                }
+            }
+        }
+    }
+    // （若超时）屏蔽该页面
+    function block() {
+        console.log('Block:'+domain);
+        chrome.tabs.update(id, {"url": 'block.html#'+domain});
+    }
+    //    console.log("check-url:"+url);
     var domain = getDomain(url);
-    var ignore = ['devtools'];
+    var ignore = ['chrome-devtools'];
     if(ignore.indexOf(domain) != -1) return;
-    var interrupt = ['newtab', 'chrome'];
+    var interrupt = ['newtab', 'chrome', 'chrome-extension'];
     if(interrupt.indexOf(domain) != -1) {
         clock.clockOut();
         return;
     }
     clock.clockIn(domain);
+    checkLimit();
 }
 init();
+chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
+    updateClock(tabId, tab['url']);
+});
 setInterval(function() {
     chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
         updateClock(tabs[0]['id'], tabs[0]['url']);
