@@ -52,6 +52,13 @@ function Clock() {
           temp[key] = clone(obj[key]);
         return temp;
     }
+    this.add = function(item) {
+        if(!item) return;
+        if(typeof(data[item]) == "undefined") {
+            data[item] = {'log':[],'sum':0};
+            items.push(item);
+        }
+    }
     this.current = function() {
         if(!currentClock) return false;
         return currentClock;
@@ -80,6 +87,18 @@ function Clock() {
         }
         data[item]['log'].unshift({'in': now.getTime(), 'out': ''});
         this.save();
+    }
+    this.getItemUpdateTime = function(item) {
+        var log = data[item]['log'];
+        if(this.current() == item) {
+            var now = new Date();
+            return now.getTime();
+        }
+        if(log.length == 0) {
+            return 0;
+        } else {
+            return typeof log[0]['out'] == "undefined" ? log[0]['in'] : log[0]['out'];
+        }
     }
     this.clockOut = function() {
         if(!this.current()) return;
@@ -204,18 +223,29 @@ function Clock() {
         d.setHours(0,0,0);
         return this.getSum(item, d.getTime());
     }
-    this.orderByRencent = function() {
+    this.sortByRencent = function() {
+        var that = this;
+        items.sort(function(a, b) {
+            return that.getItemUpdateTime(b) - that.getItemUpdateTime(a);
+        });
+        this.save();
     }
-    this.orderBySum = function() {
+    this.sortBySum = function() {
+        items.sort(function(a, b) {
+            return data[b]['sum'] - data[a]['sum'];
+        });
+        this.save();
     }
-    this.add = function(item) {
-        if(!item) return;
-        if(typeof(data[item]) == "undefined") {
-            data[item] = {'log':[],'sum':0};
-            items.push(item);
+    this.remove = function(item) {
+        if(this.current() == item)
+          this.clockOut();
+        delete data[item];
+        for(var i=0;i<items.length;i++) {
+            if(item == items[i]) {
+                items.splice(i, 1);
+            }
         }
-    }
-    this.rm = function(item) {
+        this.save();
     }
     this.reset = function() {
         currentClock = '';
