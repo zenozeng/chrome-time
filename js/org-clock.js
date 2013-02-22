@@ -10,8 +10,8 @@ Date.prototype.orgTimestamp = function() {
     d = d > 10 ? d : "0" + d;
     var H = this.getHours();
     H = H > 10 ? H : "0" + H;
-    var min = this.getMinutes();
-    min = min > 10 ? min : "0" + min;
+    var min = this.getMinutes() + "";
+    min = min.length > 1 ? min : "0" + min;
     var week = ["日","一","二","三","四","五","六"];
     var day = week[this.getDay()];
     var str = Y+"-"+m+"-"+d+" "+day+" "+H+":"+min;
@@ -147,8 +147,8 @@ function Clock() {
                 var hours = parseInt(delta/3600);
                 if(hours < 10) hours = " "+hours;
                 var minutes = (delta - 3600*hours) / 60;
-                minutes = Math.round(minutes);
-                minutes = minutes < 10 ? "0" + minutes : minutes;
+                minutes = ""+Math.round(minutes);
+                minutes = minutes.length == 1 ? "0" + minutes : minutes;
                 str += " => "+hours+":"+minutes;
                 str += "\n";
             }

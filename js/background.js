@@ -23,6 +23,7 @@ function updateClock(id, url) {
         if(typeof(opt['limit']) == "undefined") {
             return;
         }
+        var delta = 3600*10000; // as the init delta value should be large enough
         for(var i=0; i<opt['limit'].length; i++) {
             var item = opt['limit'][i];
             var sum;
@@ -36,18 +37,19 @@ function updateClock(id, url) {
                 }
                 console.log(domain);
                 var max = item['limit'] * 60 * 1000;
-                var delta = parseInt((max - sum)/1000);
-                if(delta > 0 && delta <= 60) {
-                    notify(delta);
-                }
-                if(delta == 300) {
-                    notify('时间预算还有五分钟');
-                }
-                console.log(delta);
+                var deltaTmp = parseInt((max - sum)/1000);
+                if(deltaTmp < delta)
+                  delta = deltaTmp;
                 if(sum > max) {
                     block();
                 }
             }
+        }
+        if(delta > 0 && delta <= 60) {
+            notify(delta);
+        }
+        if(delta == 300) {
+            notify('时间预算还有五分钟', 5000);
         }
     }
     // （若超时）屏蔽该页面
