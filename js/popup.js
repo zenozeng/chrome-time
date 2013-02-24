@@ -2,10 +2,12 @@ function update() {
     chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
         var clock = new Clock();
         var item = getDomain(tabs[0]['url']);
-        item = getItemsViaOpt(item);
-        var day = formatTimeDelta(clock.getSumToday(item));
-        var week = formatTimeDelta(clock.getSumThisWeek(item));
-        var month = formatTimeDelta(clock.getSumThisMonth(item));
+        var items = getItemsViaOpt(item);
+        if(items.length == 0) items = item;
+
+        var day = formatTimeDelta(clock.getSumToday(items));
+        var week = formatTimeDelta(clock.getSumThisWeek(items));
+        var month = formatTimeDelta(clock.getSumThisMonth(items));
 
         if(!day || day == ' ') day = "暂无记录";
         if(!week) week = "暂无记录";

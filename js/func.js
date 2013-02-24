@@ -39,17 +39,39 @@ function isArray(input){
 
 // common
 
-function getItemsViaOpt(item) {
+function getItemsViaOpt(item, returnDelta) {
     var opt = localStorage.getItem('opt') != null ? JSON.parse(localStorage.getItem('opt')) : {};
-    var items = false;
+    var itemsViaOpt = [];
+
+    if(typeof(opt['limit']) == "undefined") return [];
+
+    var delta = 3600*10000; // as the init delta value should be large enough
     for(var i=0; i<opt['limit'].length; i++) {
         var optItem = opt['limit'][i];
         var sum;
-        if(isArray(optItem['domain']) && optItem['domain'].indexOf(item) !== -1) {
-            items = optItem['domain']
+        if(item == optItem['domain'] || (isArray(optItem['domain']) && optItem['domain'].indexOf(item) !== -1)) {
+            if(optItem['period'] == 'day') {
+                sum = clock.getSumToday(optItem['domain']);
+            } else if(optItem['period'] == 'week') {
+                sum = clock.getSumThisWeek(optItem['domain']);
+            } else {
+                sum = clock.getSumThisMonth(optItem['domain']);
+            }
+            var max = optItem['limit'] * 60 * 1000;
+            var deltaTmp = parseInt((max - sum)/1000);
+            if(deltaTmp < delta) {
+                delta = deltaTmp;
+                itemsViaOpt = optItem['domain'];
+            }
         }
     }
-    return items;
+
+    itemsViaOpt = isArray(itemsViaOpt) ? itemsViaOpt : [itemsViaOpt];
+    if(returnDelta) {
+        return [itemsViaOpt, delta];
+    } else {
+        return itemsViaOpt;
+    }
 }
 
 // function getDomain(url) {

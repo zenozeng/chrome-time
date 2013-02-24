@@ -20,29 +20,13 @@ function updateClock(id, url) {
     var opt = localStorage.getItem('opt') != null ? JSON.parse(localStorage.getItem('opt')) : {};
     // 检查有无超时
     function checkLimit() {
-        if(typeof(opt['limit']) == "undefined") {
-            return;
-        }
-        var delta = 3600*10000; // as the init delta value should be large enough
-        for(var i=0; i<opt['limit'].length; i++) {
-            var item = opt['limit'][i];
-            var sum;
-            if(domain == item['domain'] || (isArray(item['domain']) && item['domain'].indexOf(domain) !== -1)) {
-                if(item['period'] == 'day') {
-                    sum = clock.getSumToday(item['domain']);
-                } else if(item['period'] == 'week') {
-                    sum = clock.getSumThisWeek(item['domain']);
-                } else {
-                    sum = clock.getSumThisMonth(item['domain']);
-                }
-                var max = item['limit'] * 60 * 1000;
-                var deltaTmp = parseInt((max - sum)/1000);
-                if(deltaTmp < delta)
-                  delta = deltaTmp;
-                if(sum > max) {
-                    block();
-                }
-            }
+        var arr = getItemsViaOpt(domain, true);
+        var itemsViaOpt = arr[0];
+        var delta = arr[1];
+        if(itemsViaOpt.length == 0) return;
+
+        if(delta <= 0) {
+            block(JSON.stringify(itemsViaOpt));
         }
         if(delta > 0 && delta <= 60) {
             notify(delta);
@@ -52,9 +36,9 @@ function updateClock(id, url) {
         }
     }
     // （若超时）屏蔽该页面
-    function block() {
-        console.log('Block:'+domain);
-        chrome.tabs.update(id, {"url": 'block.html#'+domain});
+    function block(go) {
+        go = go ? go : domain;
+        chrome.tabs.update(id, {"url": 'block.html#'+go});
     }
     //    console.log("check-url:"+url);
     var domain = getDomain(url);
