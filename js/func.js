@@ -1,5 +1,8 @@
 function getDomain(url) {
     // 对普通的url也适用，获取根域名
+    if(url.indexOf('localhost') == 0 || url.indexOf('://localhost') != -1) {
+        return 'localhost';
+    }
     if(url.indexOf('chrome-extension://') == 0) {
         return 'chrome-extension';
     }
@@ -30,6 +33,25 @@ function getDomain(url) {
     }
     return parts.join('.');
 }
+function isArray(input){
+    return typeof(input)=='object'&&(input instanceof Array);
+}
+
+// common
+
+function getItemsViaOpt(item) {
+    var opt = localStorage.getItem('opt') != null ? JSON.parse(localStorage.getItem('opt')) : {};
+    var items = false;
+    for(var i=0; i<opt['limit'].length; i++) {
+        var optItem = opt['limit'][i];
+        var sum;
+        if(isArray(optItem['domain']) && optItem['domain'].indexOf(item) !== -1) {
+            items = optItem['domain']
+        }
+    }
+    return items;
+}
+
 // function getDomain(url) {
 //     var parts = url.split('/');
 //     return parts[2];

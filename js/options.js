@@ -34,7 +34,6 @@ $(document).ready(function() {
         appendItem('', '');
     } else {
         for(var i=0; i<opt['limit'].length; i++) {
-            console.log('hello');
             var item = opt['limit'][i];
             appendItem(item['domain'], item['limit'], item['period'], item['id']);
         }
@@ -51,7 +50,16 @@ $(document).ready(function() {
 
         var id = $(this).parent().attr('id');
         var domain = $(this).parent().find('.domain').val();
-        domain = getDomain(domain);
+        domain = domain.replace(/ /g, '');
+        if(domain.indexOf(',') !== -1) {
+            var domains = domain.split(',');
+            domain = [];
+            for(var i=0;i<domains.length;i++) {
+                domain.push(getDomain(domains[i]));
+            }
+        } else {
+            domain = getDomain(domain);
+        }
         if(!domain) return;
         var limit = $(this).parent().find('.limit').val();
         limit = parseInt(limit);

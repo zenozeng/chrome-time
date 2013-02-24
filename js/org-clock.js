@@ -175,6 +175,17 @@ function Clock() {
         return str;
     }
     this.getSum = function(item, minTimestamp, maxTimestamp) {
+        // 若输入数组
+        if(Object.prototype.toString.call(item) === '[object Array]') {
+            var sum = 0;
+            for(var i=0; i<item.length; i++) {
+                sum += this.getSum(item[i], minTimestamp, maxTimestamp);
+            }
+            return sum;
+        }
+
+        if(typeof(data[item]) == "undefined" || !data[item]['log']) return 0;
+
         var log, sum, now;
         log = clone(data[item]['log']);
         sum = 0;
@@ -184,6 +195,7 @@ function Clock() {
           maxTimestamp = now.getTime();
         if(!minTimestamp)
           minTimestamp = 0;
+
 
         for(var i=0; i<log.length; i++) {
             if(!log[i]['out']) {
@@ -213,7 +225,11 @@ function Clock() {
     this.getSumThisWeek = function(item) {
         // 从周一 00:00 开始计算
         var d = new Date();
-        d.setTime(d.getTime() - 1000*60*60*24*(d.getDay() - 1))
+        if(d.getDay() == 0) {
+            d.setTime(d.getTime() - 1000*60*60*24*6);
+        } else {
+            d.setTime(d.getTime() - 1000*60*60*24*(d.getDay() - 1));
+        }
         d.setHours(0,0,0);
         return this.getSum(item, d.getTime());
     }

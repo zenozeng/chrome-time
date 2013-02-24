@@ -5,8 +5,7 @@
     src: local('ubuntu'), url(ubuntu.woff) format('woff');
 }
 body {
-    width: 600px;
-    height: 400px;
+    width: 500px;
     margin: 0 auto;
     padding: 20px;
     max-height: 90%;

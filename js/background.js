@@ -27,15 +27,14 @@ function updateClock(id, url) {
         for(var i=0; i<opt['limit'].length; i++) {
             var item = opt['limit'][i];
             var sum;
-            if(domain == item['domain']) {
+            if(domain == item['domain'] || (isArray(item['domain']) && item['domain'].indexOf(domain) !== -1)) {
                 if(item['period'] == 'day') {
-                    sum = clock.getSumToday(clock.current());
+                    sum = clock.getSumToday(item['domain']);
                 } else if(item['period'] == 'week') {
-                    sum = clock.getSumThisWeek(clock.current());
+                    sum = clock.getSumThisWeek(item['domain']);
                 } else {
-                    sum = clock.getSumThisMonth(clock.current());
+                    sum = clock.getSumThisMonth(item['domain']);
                 }
-                console.log(domain);
                 var max = item['limit'] * 60 * 1000;
                 var deltaTmp = parseInt((max - sum)/1000);
                 if(deltaTmp < delta)
