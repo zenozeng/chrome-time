@@ -33,22 +33,31 @@ function getDomain(url) {
     }
     return parts.join('.');
 }
+// function getDomain(url) {
+//     var parts = url.split('/');
+//     return parts[2];
+// }
+
 function isArray(input){
     return typeof(input)=='object'&&(input instanceof Array);
 }
 
 // common
 
-function getItemsViaOpt(item, returnDelta) {
+function getItemsViaOpt(item, returnDelta, period, returnBudget) {
     var opt = localStorage.getItem('opt') != null ? JSON.parse(localStorage.getItem('opt')) : {};
     var itemsViaOpt = [];
 
     if(typeof(opt['limit']) == "undefined") return [];
 
     var delta = 3600*10000; // as the init delta value should be large enough
+    var budget = false;
     for(var i=0; i<opt['limit'].length; i++) {
         var optItem = opt['limit'][i];
         var sum;
+        if(period) {
+            if(optItem['period'] != period) continue;
+        }
         if(item == optItem['domain'] || (isArray(optItem['domain']) && optItem['domain'].indexOf(item) !== -1)) {
             if(optItem['period'] == 'day') {
                 sum = clock.getSumToday(optItem['domain']);
@@ -62,19 +71,27 @@ function getItemsViaOpt(item, returnDelta) {
             if(deltaTmp < delta) {
                 delta = deltaTmp;
                 itemsViaOpt = optItem['domain'];
+                budget = max;
             }
         }
     }
 
     itemsViaOpt = isArray(itemsViaOpt) ? itemsViaOpt : [itemsViaOpt];
     if(returnDelta) {
-        return [itemsViaOpt, delta];
+        if(returnBudget) {
+            return [itemsViaOpt, delta, budget];
+        } else {
+            return [itemsViaOpt, delta];
+        }
     } else {
-        return itemsViaOpt;
+        if(returnBudget) {
+            return [itemsViaOpt, budget];
+        } else {
+            return itemsViaOpt;
+        }
     }
 }
-
-// function getDomain(url) {
-//     var parts = url.split('/');
-//     return parts[2];
-// }
+function getBudget(item, period) {
+    var arr = getItemsViaOpt(item, false, period, true);
+    return arr[1];
+}
