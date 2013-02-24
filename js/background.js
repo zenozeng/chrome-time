@@ -38,6 +38,7 @@ function updateClock(id, url) {
     // （若超时）屏蔽该页面
     function block(go) {
         go = go ? go : domain;
+        go = encodeURIComponent(go);
         chrome.tabs.update(id, {"url": 'block.html#'+go});
     }
     //    console.log("check-url:"+url);

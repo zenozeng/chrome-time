@@ -52,6 +52,9 @@ function Clock() {
           temp[key] = clone(obj[key]);
         return temp;
     }
+    function isArray(input){
+        return typeof(input)=='object'&&(input instanceof Array);
+    }
     this.add = function(item) {
         if(!item) return;
         if(typeof(data[item]) == "undefined") {
@@ -149,11 +152,14 @@ function Clock() {
         localStorage.setItem('currentClock', currentClock);
         localStorage.setItem('lastClock', lastClock);
     }
-    this.genOrgTimestamp = function() {
-        var str = "Org Timestamp Log\n======\n";
-        for(var i=0; i<items.length; i++) {
-            str += "* "+items[i]+"\n";
-            var detail = data[items[i]]['log'];
+    this.genOrgTimestamp = function(theItems) {
+        if(!theItems) theItems = items;
+        if(!isArray(theItems)) theItems = [theItems];
+          var str = "Org Timestamp Log\n======\n";
+        for(var i=0; i<theItems.length; i++) {
+            str += "* "+theItems[i]+"\n";
+            if(typeof(data[theItems[i]]) == "undefined") continue;
+            var detail = data[theItems[i]]['log'];
             for(var j=0; j<detail.length; j++) {
                 if(!detail[j]['out']) continue;
                 var delta = (detail[j]['out'] - detail[j]['in'])/1000;
