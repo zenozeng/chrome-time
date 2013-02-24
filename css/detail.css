@@ -1,0 +1,20 @@
+article {
+    width: 700px;
+    padding: 50px;
+    margin:50px auto;
+    box-shadow: 0 0 15px #777;
+    font-size: 18px;
+    color: #555;
+}
+pre {
+    padding: 14px;
+}
+#domain::before {
+    content:">";
+    padding: 0 14px;
+}
+#sum::before, #day::before, #week::before, #month::before {
+    content:">>";
+    font-weight: bold;
+    padding: 0 14px;
+}
