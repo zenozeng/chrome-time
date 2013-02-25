@@ -20,7 +20,7 @@
 	"unlimitedStorage"
     ],
     "update_url": "https://raw.github.com/zenozeng/time/master/update.xml",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "web_accessible_resources": [
 	"icons/on.png",
 	"icons/off.png"
