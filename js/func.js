@@ -44,6 +44,13 @@ function isArray(input){
 
 // common
 
+function getSaying() {
+    if(typeof(sayings) == "undefined") return false;
+    var random = Math.random() * sayings.length;
+    random = parseInt(random);
+    return sayings[random];
+}
+
 function getItemsViaOpt(item, returnDelta, period, returnBudget) {
     var opt = localStorage.getItem('opt') != null ? JSON.parse(localStorage.getItem('opt')) : {};
     var itemsViaOpt = [];

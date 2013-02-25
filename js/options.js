@@ -29,6 +29,7 @@ function saveOpt() {
 var confirmKeyupTimes = 0;
 var confirmCheckPass = false;
 var confirmTime = 10;
+var confirmIdLog = '';
 $(document).ready(function() {
     if(typeof(opt['limit']) == "undefined") {
         opt['limit'] = [];
@@ -70,8 +71,17 @@ $(document).ready(function() {
         var period = $(this).parent().find('select').val();
         var option = {'domain': domain, 'limit':limit, 'period':period, 'id':id};
         for(var i=0; i<opt['limit'].length; i++) {
-            if(opt['limit'][i]['id'] == id)
-              opt['limit'].splice(i, 1);
+            if(opt['limit'][i]['id'] == id) {
+                if(!confirmCheckPass) {
+                    console.log('!confirm');
+                    if(opt['limit'][i]['limit'] < limit) {
+                        confirmIdLog = id;
+                        $('#confirm').fadeIn(400);
+                        return;
+                    }
+                }
+                opt['limit'].splice(i, 1);
+            }
         }
         opt['limit'].push(option);
         saveOpt();
@@ -94,12 +104,11 @@ $(document).ready(function() {
     function checkConfirm() {
         if(confirmKeyupTimes <= 10) {
             alert('亲，不要闹了，认认真真打一遍吧！');
-            $('#confirm textarea').text('');
+            $('#confirm textarea').val('');
             return false;
         }
         if($('#confirm textarea').val() != $('#confirm p').text()) {
             console.log($('#confirm textarea').val());
-            console.log($('#confirm p').text());
             alert('好像和上面的话不太一样哦');
             $('#confirm textarea').text('');
             return false;
@@ -116,7 +125,10 @@ $(document).ready(function() {
             }, 1000);
             setTimeout(function() {
                 confirmCheckPass = true;
-                $('#confirm').fadeOut(800);
+                $('#confirm').fadeOut(800, function() {
+                    var dom = '#'+confirmIdLog+' .done';
+                    $(dom).click();
+                });
             }, 1000*(confirmTime+1));
         }
     });
