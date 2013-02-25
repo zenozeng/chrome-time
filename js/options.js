@@ -26,6 +26,9 @@ function appendItem(domain, limit, period, id) {
 function saveOpt() {
     localStorage.setItem('opt', JSON.stringify(opt));
 }
+var confirmKeyupTimes = 0;
+var confirmCheckPass = false;
+var confirmTime = 10;
 $(document).ready(function() {
     if(typeof(opt['limit']) == "undefined") {
         opt['limit'] = [];
@@ -81,5 +84,43 @@ $(document).ready(function() {
         }
         saveOpt();
         $(this).parent().fadeOut(800);
+    });
+    $('#confirm p').html(getSaying());
+
+    $('#confirm textarea').on('keyup', function() {
+        confirmKeyupTimes += 1;
+        console.log('key');
+    });
+    function checkConfirm() {
+        if(confirmKeyupTimes <= 10) {
+            alert('亲，不要闹了，认认真真打一遍吧！');
+            $('#confirm textarea').text('');
+            return false;
+        }
+        if($('#confirm textarea').val() != $('#confirm p').text()) {
+            console.log($('#confirm textarea').val());
+            console.log($('#confirm p').text());
+            alert('好像和上面的话不太一样哦');
+            $('#confirm textarea').text('');
+            return false;
+        }
+        return true;
+    }
+    $('#confirm-sure').click(function() {
+        if(checkConfirm()) {
+            $('#confirm-sure').text(confirmTime);
+            setInterval(function() {
+                if(confirmCheckPass) return;
+                confirmTime -= 1;
+                $('#confirm-sure').text(confirmTime);
+            }, 1000);
+            setTimeout(function() {
+                confirmCheckPass = true;
+                $('#confirm').fadeOut(800);
+            }, 1000*(confirmTime+1));
+        }
+    });
+    $('#confirm-cancel').click(function() {
+        window.location.reload();
     });
 });
