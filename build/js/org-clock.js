@@ -1,15 +1,17 @@
 // org-clock.js
-// Copyright (C) 2013 Zeno Zeng
 // 提供类似org的clock的功能
+// Copyright (C) 2013 Zeno Zeng
+// Licensed under the MIT license
+// Time-stamp: <2013-02-25 19:07:25 Zeno Zeng>
 
 Date.prototype.orgTimestamp = function() {
     var Y = this.getFullYear();
     var m = this.getMonth() + 1;
-    m = m > 10 ? m : "0" + m;
+    m = m >= 10 ? m : "0" + m;
     var d = this.getDate();
-    d = d > 10 ? d : "0" + d;
+    d = d >= 10 ? d : "0" + d;
     var H = this.getHours();
-    H = H > 10 ? H : "0" + H;
+    H = H >= 10 ? H : "0" + H;
     var min = this.getMinutes() + "";
     min = min.length > 1 ? min : "0" + min;
     var week = ["日","一","二","三","四","五","六"];
