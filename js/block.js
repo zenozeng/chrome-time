@@ -9,3 +9,4 @@ var month = formatTimeDelta(clock.getSumThisMonth(items));
 $('#day').html("今天: "+day);
 $('#week').html("本周: "+week);
 $('#month').html("本月: "+month);
+$('#saying').html(getSaying());
