@@ -2,7 +2,7 @@
 // 提供类似org的clock的功能
 // Copyright (C) 2013 Zeno Zeng
 // Licensed under the MIT license
-// Time-stamp: <2013-02-25 19:07:25 Zeno Zeng>
+// Time-stamp: <2013-02-27 13:50:35 Zeno Zeng>
 
 Date.prototype.orgTimestamp = function() {
     var Y = this.getFullYear();
@@ -226,7 +226,6 @@ function Clock() {
     }
     this.getSumToday = function(item) {
         var d = new Date();
-        d.setTime(d.getTime() - 1000*60*60*24);
         d.setHours(0,0,0);
         return this.getSum(item, d.getTime());
     }

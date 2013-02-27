@@ -26,6 +26,7 @@ function updateClock(id, url) {
         if(itemsViaOpt.length == 0) return;
 
         if(delta <= 0) {
+            clock.clockOut();
             block(JSON.stringify(itemsViaOpt));
         }
         if(delta > 0 && delta <= 60) {

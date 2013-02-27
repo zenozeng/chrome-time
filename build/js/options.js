@@ -75,7 +75,7 @@ $(document).ready(function() {
                 if(!confirmCheckPass) {
                     console.log('!confirm');
                     if(opt['limit'][i]['limit'] < limit) {
-                        confirmIdLog = id;
+                        confirmIdLog = '#'+id+' .done';
                         $('#confirm').fadeIn(400);
                         return;
                     }
@@ -88,6 +88,11 @@ $(document).ready(function() {
     });
     $('#items').on('click', '.cancel', function() {
         var id = $(this).parent().attr('id');
+        if(!confirmCheckPass) {
+            console.log('!confirm');
+            confirmIdLog = '#'+id+' .cancel';
+            $('#confirm').fadeIn(400);
+        }
         for(var i=0; i<opt['limit'].length; i++) {
             if(opt['limit'][i]['id'] == id)
               opt['limit'].splice(i, 1);
@@ -126,7 +131,7 @@ $(document).ready(function() {
             setTimeout(function() {
                 confirmCheckPass = true;
                 $('#confirm').fadeOut(800, function() {
-                    var dom = '#'+confirmIdLog+' .done';
+                    var dom = confirmDomLog;
                     $(dom).click();
                 });
             }, 1000*(confirmTime+1));
