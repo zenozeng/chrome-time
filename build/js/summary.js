@@ -7,9 +7,9 @@ $(document).ready(function() {
 
     for(var i=0; i<items.length; i++) {
         var item = items[i];
-        html += '<div style="border:1px solid #777; max-width:850px;margin:0 auto;border-bottom:#fff;  padding: 1em; line-height: 1.5em; font-size:12px;">';
+        html += '<div style="max-width:850px;margin:0 auto;border-bottom:#fff;  padding: 1em; line-height: 1.5em; font-size:12px;">';
         html += '<a href="detail.html#'+encodeURIComponent(JSON.stringify(item))+'" style="text-decoration:none;">';
-        html += '<span style="color: blue">#'+i+" "+JSON.stringify(item)+'</span>';
+        html += '<span style="color: red">#'+i+" "+JSON.stringify(item)+'</span>';
         html += '</a>';
         html += '<span style="float:right">';
         html += '<span style="width:90px; display:inline-block;text-align:left;">';
@@ -31,6 +31,4 @@ $(document).ready(function() {
         html += '</div>';
     }
     $('#items').html(html);
-    // var orgShow = clock.genOrgTimestamp();
-    // $('#org-show').html(orgShow);
 });

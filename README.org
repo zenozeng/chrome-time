@@ -24,9 +24,14 @@
   This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
   
   You should have received a copy of the GNU Affero General Public License along with this program. If not, see http://www.gnu.org/licenses/.
+
 * 参与
+  
   目前未完成的模块有 i18n 以及 一些细节的体验优化。
   欢迎大家通过Fork我来参与开发。
   
   项目地址：https://github.com/zenozeng/time
    
+* 捐助我
+
+  https://me.alipay.com/zenozeng
