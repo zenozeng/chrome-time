@@ -1,28 +1,32 @@
 {
     "background": {
-	"scripts": ["js/func.js","js/org-clock.js","js/background.js"]
+        "scripts": [
+            "js/func.js",
+            "js/org-clock.js",
+            "js/background.js"
+        ]
     },
     "browser_action": {
-	"default_icon": "icons/on.png",
-	"default_popup": "popup.html"
+        "default_icon": "icons/on.png",
+        "default_popup": "popup.html"
     },
     "description": "一个简单的时间统计插件",
     "icons": {
-	"128": "icons/on.png"
+        "128": "icons/on.png"
     },
     "manifest_version": 2,
     "name": "时间",
     "options_page": "options.html",
     "permissions": [
-	"notifications",
-	"tabs",
-	"<all_urls>",
-	"unlimitedStorage"
+        "notifications",
+        "tabs",
+        "<all_urls>",
+        "unlimitedStorage"
     ],
-    "update_url": "https://raw.github.com/zenozeng/time/master/update.xml",
+    "update_url": "https://raw.github.com/zenozeng/chrome-time/master/update.xml",
     "version": "0.0.5",
     "web_accessible_resources": [
-	"icons/on.png",
-	"icons/off.png"
+        "icons/on.png",
+        "icons/off.png"
     ]
 }
