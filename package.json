@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/zenozeng/chrome-time/issues"
   },
-  "homepage": "https://github.com/zenozeng/chrome-time#readme"
+  "homepage": "https://github.com/zenozeng/chrome-time#readme",
+  "dependencies": {
+    "moment": "^2.13.0"
+  }
 }
