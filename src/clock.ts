@@ -1,10 +1,26 @@
 /**
- * Time clocking library
+ * @file
  * 
+ * Time clocking library 
  * Some design was steal from time clocking of Emacs's Org mode
  */
 
-interface ClockLog {
+import Dexie from 'dexie';
+let Promise = Dexie.Promise; // standard Promise don't understant current scope of Dexie transactions
+
+class ClockLogDatabase extends Dexie {
+    logs: Dexie.Table<IClockLog, string>;
+
+    constructor() {
+        super('ClockLogDatabase');
+        this.version(1).stores({
+            logs: 'key, in, out'    
+        });
+    }
+} 
+
+
+interface IClockLog {
     key: string;
     in: number; // getTime() for clockIn time
     out: number; // getTime() for clockOut time;

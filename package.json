@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/zenozeng/chrome-time#readme",
   "dependencies": {
+    "dexie": "^1.4.1",
     "moment": "^2.13.0"
   }
 }
