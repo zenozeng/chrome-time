@@ -1,0 +1,19 @@
+{
+  "name": "chrome-time",
+  "version": "0.0.5",
+  "description": "这是一个时间统计类的Chrome扩展，可以统计在各个网站滞留的时间，并且可以设置时间预算，若超出预算则不允许继续访问该网站。 比如：将 weibo.com 设置为20min/day，那么如果我一天访问人人超过20分钟，就不再允许我当天继续访问人人。",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zenozeng/chrome-time.git"
+  },
+  "author": "Zeno Zeng",
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/zenozeng/chrome-time/issues"
+  },
+  "homepage": "https://github.com/zenozeng/chrome-time#readme"
+}
