@@ -3,19 +3,6 @@
   
   比如：我将renren.com设置为20min/day，那么如果我一天访问人人超过20分钟，就不再允许我当天继续访问人人。
 
-* 获取
-  由于没有国外的信用卡，所以我没有上传到google的chrome商店。大家可以下载crx进行安装。
-  
-** 下载crx文件
-   https://raw.github.com/zenozeng/time/master/build.crx
-   
-** 打开扩展中心
-   地址栏输入 chrome://extensions/。
-   将刚才下载的crx文件拖到页面中，然后就安装好了。
-  
-
-
-
 * 协议（AGPL）
   Copyright (C) 2013 Zeno Zeng
   
@@ -24,8 +11,3 @@
   This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
   
   You should have received a copy of the GNU Affero General Public License along with this program. If not, see http://www.gnu.org/licenses/.
-
-   
-* 捐助我
-
-  https://me.alipay.com/zenozeng
